@@ -119,10 +119,10 @@ Alguns produtos só podem ser vendidos em quantidades múltiplas de um determina
 
 # Executando a aplicação
 
-A aplicação pode ser executada usando docker, bastando executar o comando docker-compose up -d no diretório raiz.
+A aplicação pode ser executada usando docker, bastando executar o comando ```docker-compose up -d``` no diretório raiz.
 
 Ela foi construída usando Laravel 5.5, PHP 7.2, PhpMyadmin 4.9, MySql 5.7.22 e Nginx alpine.
 
 Após subir o ambiente é preciso baixar as dependências do projeto (diretório vendor). Para isso, dê o comando ```docker-compose exec php sh```, depois o comando composer install.
 
-Em seguida, dê o comando php artisan migrate para gerar as tabelas.
+Em seguida, dê o comando ```php artisan migrate``` para gerar as tabelas.
