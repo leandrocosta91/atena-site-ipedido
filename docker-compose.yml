@@ -1,0 +1,76 @@
+version: '3'
+
+volumes:
+  dbdata:
+    driver: local
+
+networks:
+  ipedido:
+    driver: bridge
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - ipedido
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - ipedido
+
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ipedido
+      MYSQL_ROOT_PASSWORD: 12345678
+    networks:
+      - ipedido
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:4.9
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: 12345678
+      MYSQL_DATABASE: ipedido
+      MYSQL_USER: root
+      MYSQL_PASSWORD: 12345678
+      MYSQL_ROOT_PASSWORD: 12345678
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/phpmyadmin/data/sessions:/sessions
+    networks:
+      - ipedido
