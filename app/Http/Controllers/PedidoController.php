@@ -114,9 +114,7 @@ class PedidoController extends Controller
     {
         $produto = Produto::findOrFail($request->idproduto);
 
-        return json_encode([
-            'rentabilidade' => Pedido::calcula_rentabilidade_ajax($request->preco_unitario, $produto)
-        ]);
+        return json_encode(Pedido::calcula_rentabilidade_ajax($request->preco_unitario, $produto));
     }
 
     public function aprova_multiplo_ajax(Request $request)

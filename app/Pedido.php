@@ -28,11 +28,20 @@ class Pedido extends Model
     public static function calcula_rentabilidade_ajax($preco_unitario, $produto){
 
         if ($preco_unitario > $produto->preco_unitario) {
-            return 'Rentabilidade ótima';
+            return [
+                'retorno' => 1,
+                'rentabilidade' => 'Rentabilidade ótima'
+            ];
         } else if ((($preco_unitario * 100) / $produto->preco_unitario) >= 90 ) {
-            return 'Rentabilidade boa';
+            return [
+                'retorno' => 2,
+                'rentabilidade' => 'Rentabilidade boa'
+            ];
         } else {
-            return 'Rentabilidade ruim';
+            return [
+                'retorno' => 3,
+                'rentabilidade' => 'Rentabilidade ruim'
+            ];
         }
     }
 }

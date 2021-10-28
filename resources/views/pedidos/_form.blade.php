@@ -94,6 +94,19 @@
                         success : function(response) {
                             json_response = JSON.parse(response);
                             $("#rentabilidade").val(json_response.rentabilidade);
+                            if (json_response.retorno == 3) {
+                                const erro = 
+                                `<div class="alert alert-danger alert-dismissible" role="alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    Preço unitário com rentabilidade ruim não pode ser inserido.
+                                </div>`;
+                                $("#preco_unitario").val("");
+                                $("#div_erro").html(erro);
+                            } else {
+                                $("#div_erro").html("");
+                            }
                         }
                     });
                 }
@@ -115,7 +128,7 @@
                             json_response = JSON.parse(response);
                             if (!json_response.retorno) {
                                 const erro = 
-                                ` <div class="alert alert-danger alert-dismissible" role="alert">
+                                `<div class="alert alert-danger alert-dismissible" role="alert">
                                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -123,6 +136,8 @@
                                 </div>`;
                                 $("#div_erro").html(erro);
                                 $("#quantidade").val("");
+                            } else {
+                                $("#div_erro").html("");
                             }
                             $("#rentabilidade").val(json_response.rentabilidade);
                         }
